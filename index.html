@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>교육혁신지원센터 질의응답</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f9fc;
+        --card: #ffffff;
+        --accent: #2b6cb0;
+        --accent-light: #ebf4ff;
+        --text: #1a202c;
+        --muted: #4a5568;
+        --border: #e2e8f0;
+        --success: #2f855a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--accent) 0%, #274472 100%);
+        color: #fff;
+        padding: 56px 24px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: clamp(28px, 6vw, 40px);
+        font-weight: 700;
+      }
+
+      header p {
+        margin: 12px auto 0;
+        max-width: 680px;
+        line-height: 1.6;
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      main {
+        max-width: 960px;
+        margin: -32px auto 72px;
+        padding: 0 24px;
+        display: grid;
+        gap: 28px;
+      }
+
+      section {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 32px;
+        box-shadow: 0 24px 60px rgba(43, 108, 176, 0.08);
+        border: 1px solid rgba(43, 108, 176, 0.08);
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .subtext {
+        margin: 4px 0 24px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+        font-size: 15px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        font-family: inherit;
+      }
+
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.12);
+      }
+
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      button {
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: none;
+        color: #fff;
+        background: var(--accent);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(43, 108, 176, 0.2);
+      }
+
+      .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        background: #fff;
+        color: var(--accent);
+        border: 1px solid rgba(43, 108, 176, 0.3);
+        text-decoration: none;
+        transition: box-shadow 0.2s ease;
+      }
+
+      .secondary-btn:hover {
+        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.12);
+      }
+
+      .attachment-box {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px dashed var(--border);
+        background: #f8fbff;
+      }
+
+      .attachment-hint {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .attachment-warning {
+        font-weight: 700;
+        color: #e53e3e;
+      }
+
+      .attachment-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .attachment-preview .attachment-item {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .attachment-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .attachment-remove {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        border: none;
+        background: rgba(17, 24, 39, 0.75);
+        color: #fff;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .attachment-remove:hover {
+        background: rgba(17, 24, 39, 0.9);
+      }
+
+      .attachment-empty {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .pagination button {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(43, 108, 176, 0.3);
+        background: #fff;
+        color: var(--accent);
+        font-weight: 600;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, transform 0.15s ease;
+      }
+
+      .pagination button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.12);
+      }
+
+      .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .pagination .page-status {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .question-list {
+        display: grid;
+        gap: 18px;
+        margin-top: 12px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+        display: grid;
+        gap: 14px;
+      }
+
+      .card-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        justify-content: space-between;
+      }
+
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        background: var(--accent-light);
+        color: var(--accent);
+      }
+
+      .chip.pending {
+        background: #fff7e6;
+        color: #b7791f;
+      }
+
+      .chip.answered {
+        background: #e6fffa;
+        color: var(--success);
+      }
+
+      .chip.role {
+        background: rgba(47, 133, 90, 0.12);
+        color: var(--success);
+      }
+
+      .question-text {
+        font-size: 17px;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .attachment-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .attachment-gallery a {
+        display: block;
+        width: 96px;
+        height: 96px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .attachment-gallery img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .answer-block {
+        border-left: 4px solid var(--accent);
+        padding: 12px 16px;
+        background: var(--accent-light);
+        border-radius: 12px;
+        line-height: 1.7;
+      }
+
+      .answer-block.empty {
+        border-color: #d69e2e;
+        background: #fefcbf;
+        color: #744210;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .card-footer.readonly {
+        justify-content: flex-end;
+      }
+
+      .empty-state {
+        padding: 36px;
+        text-align: center;
+        border: 1px dashed var(--border);
+        border-radius: 16px;
+        color: var(--muted);
+        font-size: 15px;
+        background: #fff;
+      }
+
+      .session-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 24px;
+      }
+
+      .session-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .session-text {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+        margin: 56px 0 24px;
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding: 48px 18px;
+        }
+
+        section {
+          padding: 24px;
+        }
+
+        .card {
+          padding: 18px;
+        }
+
+        .session-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>2026 역량중심 교육과정 개발 보고서 작성 질의응답</h1>
+      <p>
+        학과별 질문을 한 곳에서 관리하고 공유하기 위해 개발된 서비스입니다.
+      </p>
+    </header>
+
+    <main>
+      <section class="session-bar" aria-live="polite">
+        <div class="session-info">
+          <span id="welcome-text" class="session-text"
+            >현재 학과 전용 모드입니다. 이 브라우저에서 등록한 질문만 확인할 수
+            있습니다.</span
+          >
+          <span class="chip role">질문 등록 전용</span>
+        </div>
+        <a class="secondary-btn" href="admin.html">관리자 로그인</a>
+      </section>
+
+      <section id="question-form-section" aria-labelledby="submit-title">
+        <h2 id="submit-title">질문 등록</h2>
+        <p class="subtext">
+          학과에서 궁금한 내용을 남겨주세요. 관리자가 확인 후 답변을 등록하면 같은 화면에서 확인할 수 있습니다.
+        </p>
+        <form id="question-form">
+          <label>
+            소속 학과
+            <select id="department" required>
+              <option value="">학과를 선택해주세요</option>
+              <option>신학과</option>
+              <option>기독교교육상담학과</option>
+              <option>국어국문학과</option>
+              <option>영어영문학과</option>
+              <option>중어중문학과</option>
+              <option>국제개발협력학과</option>
+              <option>사회복지학과</option>
+              <option>행정학부</option>
+              <option>관광학과</option>
+              <option>경영학과</option>
+              <option>글로벌물류학과</option>
+              <option>유아교육과</option>
+              <option>체육교육과</option>
+              <option>교직부</option>
+              <option>컴퓨터공학과</option>
+              <option>정보통신공학과</option>
+              <option>도시디자인정보공학과</option>
+              <option>산업경영공학과</option>
+              <option>연기예술학과</option>
+              <option>영화영상학과</option>
+              <option>실용음악예술학과</option>
+              <option>뷰티디자인학과</option>
+              <option>융합학부</option>
+              <option>파이데이아학부</option>
+            </select>
+          </label>
+
+          <label>
+            질문 내용
+            <textarea
+              id="question"
+              placeholder="필요한 지원이나 문의사항을 자세히 적어주세요."
+              required
+            ></textarea>
+          </label>
+
+          <div class="attachment-box">
+            <p class="attachment-hint">
+            <span class="attachment-warning"
+              >캡처 이미지를 복사한 뒤 붙여넣기(Ctrl+V) 하면 첨부됩니다. (최대 5개,
+              파일당 5MB)</span
+            >
+            </p>
+            <div
+              id="question-attachment-preview"
+              class="attachment-preview"
+              aria-live="polite"
+            ></div>
+          </div>
+
+          <button type="submit">질문 등록하기</button>
+        </form>
+      </section>
+
+      <section aria-labelledby="list-title">
+        <h2 id="list-title">질문 및 답변 현황</h2>
+        <p class="subtext">
+          현재 브라우저에서 등록한 질문만 표시됩니다. 전체 질문과 답변 관리는
+          <a href="admin.html">관리자 화면</a>에서 진행됩니다.
+        </p>
+        <div id="question-list" class="question-list" role="list"></div>
+        <div
+          id="pagination"
+          class="pagination"
+          role="navigation"
+          aria-label="질문 목록 페이지 이동"
+          hidden
+        ></div>
+        <div id="empty-state" class="empty-state" hidden>
+          아직 등록된 질문이 없습니다. 첫 질문을 남겨주세요!
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      교육혁신지원센터 · 문의: kchmok@sungkyul.ac.kr · 031-467-8460
+    </footer>
+
+    <template id="question-card-template">
+      <article class="card" role="listitem">
+        <div class="card-header">
+          <span class="chip"></span>
+          <span class="meta"></span>
+        </div>
+        <div class="question-text"></div>
+        <div class="attachment-gallery question-attachments" hidden></div>
+        <div class="answer-block"></div>
+        <div class="attachment-gallery answer-attachments-display" hidden></div>
+        <div class="card-footer readonly">
+          <span class="updated-at meta"></span>
+        </div>
+      </article>
+    </template>
+
+    <script>
+      const STORAGE_KEY = "center-qna-items-v2";
+      const DEVICE_KEY = "center-qna-device-id";
+      const MAX_ATTACHMENTS = 5;
+      const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+      const ITEMS_PER_PAGE = 10;
+
+      const form = document.getElementById("question-form");
+      const list = document.getElementById("question-list");
+      const emptyState = document.getElementById("empty-state");
+      const template = document.getElementById("question-card-template");
+      const questionTextarea = document.getElementById("question");
+      const attachmentPreview = document.getElementById(
+        "question-attachment-preview"
+      );
+      const pagination = document.getElementById("pagination");
+
+      const defaultSeed = [
+        {
+          id: crypto.randomUUID(),
+          department: "컴퓨터공학과",
+          question:
+            "2025학년도 비교과 프로그램 운영 지원 신청 일정과 준비 서류가 궁금합니다.",
+          answer:
+            "3월 둘째 주에 공지 예정이며, 프로그램 개요서와 예산계획서를 함께 제출하시면 됩니다.",
+          status: "answered",
+          attachments: [],
+          answerAttachments: [],
+          createdAt: Date.now() - 1000 * 60 * 60 * 24 * 3,
+          updatedAt: Date.now() - 1000 * 60 * 60 * 24,
+          sessionId: null,
+        },
+        {
+          id: crypto.randomUUID(),
+          department: "교육학과",
+          question:
+            "교수법 워크숍 강사 섭외를 위한 추천 리스트를 받을 수 있을까요?",
+          answer: "",
+          status: "pending",
+          attachments: [],
+          answerAttachments: [],
+          createdAt: Date.now() - 1000 * 60 * 60 * 12,
+          updatedAt: Date.now() - 1000 * 60 * 60 * 12,
+          sessionId: null,
+        },
+      ];
+
+      function loadItems() {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (!stored) return defaultSeed;
+          const parsed = JSON.parse(stored);
+          if (!Array.isArray(parsed)) throw new Error("Invalid data");
+          return parsed;
+        } catch (error) {
+          console.error("Failed to load items", error);
+          return defaultSeed;
+        }
+      }
+
+      function saveItems(items) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
+
+      function getDeviceId() {
+        let id = localStorage.getItem(DEVICE_KEY);
+        if (!id) {
+          id = crypto.randomUUID();
+          localStorage.setItem(DEVICE_KEY, id);
+        }
+        return id;
+      }
+
+      function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(date.getDate()).padStart(2, "0")} ${String(
+          date.getHours()
+        ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+      }
+
+      function cloneAttachments(list) {
+        return (list || []).map((item) => ({ ...item }));
+      }
+
+      function renderAttachmentGallery(container, attachments) {
+        if (!attachments || !attachments.length) {
+          container.innerHTML = "";
+          container.hidden = true;
+          return;
+        }
+
+        container.hidden = false;
+        container.innerHTML = "";
+
+        attachments.forEach((attachment) => {
+          const link = document.createElement("a");
+          link.href = attachment.dataUrl;
+          link.target = "_blank";
+          link.rel = "noopener";
+          if (attachment.name) {
+            link.download = attachment.name;
+            link.title = attachment.name;
+          }
+
+          const img = document.createElement("img");
+          img.src = attachment.dataUrl;
+          img.alt = attachment.name || "첨부 이미지";
+          img.className = "attachment-thumb";
+
+          link.appendChild(img);
+          container.appendChild(link);
+        });
+      }
+
+      function renderAttachmentPreview(previewEl, attachments) {
+        if (!attachments.length) {
+          previewEl.innerHTML =
+            '<p class="attachment-empty">붙여넣기(Ctrl+V)로 이미지를 첨부할 수 있습니다.</p>';
+          return;
+        }
+
+        previewEl.innerHTML = "";
+        attachments.forEach((attachment) => {
+          const item = document.createElement("div");
+          item.className = "attachment-item";
+
+          const img = document.createElement("img");
+          img.src = attachment.dataUrl;
+          img.alt = attachment.name || "첨부 이미지";
+          img.className = "attachment-thumb";
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "attachment-remove";
+          removeBtn.title = "첨부 삭제";
+          removeBtn.textContent = "×";
+          removeBtn.addEventListener("click", () => {
+            questionAttachments = questionAttachments.filter(
+              (entry) => entry.id !== attachment.id
+            );
+            renderAttachmentPreview(previewEl, questionAttachments);
+          });
+
+          item.appendChild(img);
+          item.appendChild(removeBtn);
+          previewEl.appendChild(item);
+        });
+      }
+
+      function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("Failed to read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function addAttachmentsFromFiles(files, attachments, renderFn) {
+        for (const file of files) {
+          if (!file) continue;
+          if (!file.type.startsWith("image/")) continue;
+          if (attachments.length >= MAX_ATTACHMENTS) {
+            alert(`이미지는 최대 ${MAX_ATTACHMENTS}개까지 첨부할 수 있습니다.`);
+            break;
+          }
+          if (file.size > MAX_IMAGE_BYTES) {
+            alert("이미지 크기는 5MB 이하여야 합니다.");
+            continue;
+          }
+
+          try {
+            const dataUrl = await readFileAsDataURL(file);
+            attachments.push({
+              id: crypto.randomUUID(),
+              dataUrl,
+              mimeType: file.type,
+              name: file.name || "clipboard-image",
+              addedAt: Date.now(),
+            });
+          } catch (error) {
+            console.error(error);
+            alert("이미지 첨부에 실패했습니다. 다시 시도해주세요.");
+          }
+        }
+
+        renderFn();
+      }
+
+      let items = loadItems();
+      const deviceId = getDeviceId();
+      let questionAttachments = [];
+      let currentPage = 1;
+
+      function renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+        if (totalPages <= 1) {
+          pagination.hidden = true;
+          pagination.innerHTML = "";
+          return;
+        }
+
+        pagination.hidden = false;
+        pagination.innerHTML = "";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.textContent = "이전";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage -= 1;
+            renderItems();
+          }
+        });
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.textContent = "다음";
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage += 1;
+            renderItems();
+          }
+        });
+
+        const status = document.createElement("span");
+        status.className = "page-status";
+        status.textContent = `${currentPage} / ${totalPages}`;
+
+        pagination.appendChild(prevBtn);
+        pagination.appendChild(status);
+        pagination.appendChild(nextBtn);
+      }
+
+      function renderItems() {
+        list.innerHTML = "";
+
+        const visibleItems = items
+          .filter((item) => item.sessionId === deviceId)
+          .sort((a, b) => b.updatedAt - a.updatedAt);
+
+        if (!visibleItems.length) {
+          emptyState.hidden = false;
+          renderPagination(0);
+          return;
+        }
+
+        emptyState.hidden = true;
+
+        const totalPages = Math.ceil(visibleItems.length / ITEMS_PER_PAGE);
+        if (currentPage > totalPages) {
+          currentPage = totalPages;
+        }
+
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const pageItems = visibleItems.slice(
+          start,
+          start + ITEMS_PER_PAGE
+        );
+
+        pageItems.forEach((item) => {
+          const card = template.content.firstElementChild.cloneNode(true);
+          const chip = card.querySelector(".chip");
+          const meta = card.querySelector(".meta");
+          const questionText = card.querySelector(".question-text");
+          const questionAttachmentsContainer = card.querySelector(
+            ".question-attachments"
+          );
+          const answerBlock = card.querySelector(".answer-block");
+          const answerAttachmentsContainer = card.querySelector(
+            ".answer-attachments-display"
+          );
+          const updatedAt = card.querySelector(".updated-at");
+
+          chip.textContent =
+            item.status === "answered" ? "답변 완료" : "답변 대기";
+          chip.classList.add(
+            item.status === "answered" ? "answered" : "pending"
+          );
+
+          meta.textContent = item.department;
+          questionText.textContent = item.question;
+
+          renderAttachmentGallery(
+            questionAttachmentsContainer,
+            item.attachments || []
+          );
+
+          if (item.answer) {
+            answerBlock.textContent = item.answer;
+            answerBlock.classList.remove("empty");
+          } else {
+            answerBlock.textContent = "답변이 아직 등록되지 않았습니다.";
+            answerBlock.classList.add("empty");
+          }
+
+          renderAttachmentGallery(
+            answerAttachmentsContainer,
+            item.answerAttachments || []
+          );
+
+          updatedAt.textContent = `최근 업데이트: ${formatDate(
+            item.updatedAt
+          )}`;
+
+          list.appendChild(card);
+        });
+
+        renderPagination(visibleItems.length);
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const department = document.getElementById("department").value.trim();
+        const question = questionTextarea.value.trim();
+
+        if (!department || !question) {
+          return;
+        }
+
+        const newItem = {
+          id: crypto.randomUUID(),
+          department,
+          question,
+          attachments: cloneAttachments(questionAttachments),
+          answerAttachments: [],
+          answer: "",
+          status: "pending",
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          sessionId: deviceId,
+        };
+
+        items = [newItem, ...items];
+        saveItems(items);
+        currentPage = 1;
+        renderItems();
+        form.reset();
+        questionAttachments = [];
+        renderAttachmentPreview(attachmentPreview, questionAttachments);
+        document.getElementById("department").focus();
+      });
+
+      questionTextarea.addEventListener("paste", async (event) => {
+        const items = event.clipboardData?.items;
+        if (!items) return;
+        const files = Array.from(items)
+          .filter((item) => item.kind === "file" && item.type.startsWith("image/"))
+          .map((item) => item.getAsFile())
+          .filter(Boolean);
+        if (!files.length) return;
+
+        await addAttachmentsFromFiles(files, questionAttachments, () => {
+          renderAttachmentPreview(attachmentPreview, questionAttachments);
+        });
+      });
+
+      renderAttachmentPreview(attachmentPreview, questionAttachments);
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === STORAGE_KEY) {
+          items = loadItems();
+          const visibleCount = items.filter(
+            (item) => item.sessionId === deviceId
+          ).length;
+          const totalPages =
+            Math.ceil(visibleCount / ITEMS_PER_PAGE) || 1;
+          if (currentPage > totalPages) {
+            currentPage = totalPages;
+          }
+          renderItems();
+        }
+      });
+
+      currentPage = 1;
+      renderItems();
+    </script>
+  </body>
+</html>
+

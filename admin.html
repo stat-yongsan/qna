@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>교육혁신지원센터 관리자</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f9fc;
+        --card: #ffffff;
+        --accent: #2b6cb0;
+        --accent-light: #ebf4ff;
+        --text: #1a202c;
+        --muted: #4a5568;
+        --border: #e2e8f0;
+        --success: #2f855a;
+        --warning: #b7791f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--accent) 0%, #274472 100%);
+        color: #fff;
+        padding: 56px 24px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: clamp(28px, 6vw, 40px);
+        font-weight: 700;
+      }
+
+      header p {
+        margin: 12px auto 0;
+        max-width: 680px;
+        line-height: 1.6;
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      main {
+        max-width: 960px;
+        margin: -32px auto 72px;
+        padding: 0 24px;
+        display: grid;
+        gap: 28px;
+      }
+
+      section {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 32px;
+        box-shadow: 0 24px 60px rgba(43, 108, 176, 0.08);
+        border: 1px solid rgba(43, 108, 176, 0.08);
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .subtext {
+        margin: 4px 0 24px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+        font-size: 15px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        font-family: inherit;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.12);
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      button {
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: none;
+        color: #fff;
+        background: var(--accent);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(43, 108, 176, 0.2);
+      }
+
+      .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        background: #fff;
+        color: var(--accent);
+        border: 1px solid rgba(43, 108, 176, 0.3);
+        text-decoration: none;
+        transition: box-shadow 0.2s ease;
+      }
+
+      .secondary-btn:hover {
+        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.12);
+      }
+
+      .attachment-box {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px dashed var(--border);
+        background: #f8fbff;
+      }
+
+      .attachment-hint {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .attachment-warning {
+        font-weight: 700;
+        color: #e53e3e;
+      }
+
+      .attachment-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .attachment-preview .attachment-item {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .attachment-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .attachment-remove {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        border: none;
+        background: rgba(17, 24, 39, 0.75);
+        color: #fff;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .attachment-remove:hover {
+        background: rgba(17, 24, 39, 0.9);
+      }
+
+      .attachment-empty {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .pagination button {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(43, 108, 176, 0.3);
+        background: #fff;
+        color: var(--accent);
+        font-weight: 600;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, transform 0.15s ease;
+      }
+
+      .pagination button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(43, 108, 176, 0.12);
+      }
+
+      .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .pagination .page-status {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .card-action-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .danger-btn {
+        background: #e53e3e;
+        color: #fff;
+      }
+
+      .danger-btn:hover {
+        background: #c53030;
+      }
+
+      .session-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 24px;
+      }
+
+      .session-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .session-text {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .session-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(43, 108, 176, 0.14);
+        color: var(--accent);
+      }
+
+      .chip.pending {
+        background: #fff7e6;
+        color: var(--warning);
+      }
+
+      .chip.answered {
+        background: #e6fffa;
+        color: var(--success);
+      }
+
+      .question-list {
+        display: grid;
+        gap: 18px;
+        margin-top: 12px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+        display: grid;
+        gap: 14px;
+      }
+
+      .card-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        justify-content: space-between;
+      }
+
+      .question-text {
+        font-size: 17px;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      .attachment-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .attachment-gallery a {
+        display: block;
+        width: 96px;
+        height: 96px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .attachment-gallery img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .answer-block {
+        border-left: 4px solid var(--accent);
+        padding: 12px 16px;
+        background: var(--accent-light);
+        border-radius: 12px;
+        line-height: 1.7;
+      }
+
+      .answer-block.empty {
+        border-color: #d69e2e;
+        background: #fefcbf;
+        color: #744210;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .answer-form,
+      .question-edit-form {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px dashed var(--border);
+        background: #f8fbff;
+      }
+
+      .empty-state {
+        padding: 36px;
+        text-align: center;
+        border: 1px dashed var(--border);
+        border-radius: 16px;
+        color: var(--muted);
+        font-size: 15px;
+        background: #fff;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+        margin: 56px 0 24px;
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding: 48px 18px;
+        }
+
+        section {
+          padding: 24px;
+        }
+
+        .card {
+          padding: 18px;
+        }
+
+        .session-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>교육혁신지원센터 관리자 페이지</h1>
+      <p>
+        학과에서 등록한 모든 질문을 확인하고, 답변을 작성하거나 수정할 수 있는 관리자 전용 화면입니다.
+      </p>
+    </header>
+
+    <main>
+      <section class="session-bar" aria-live="polite">
+        <div class="session-info">
+          <span id="welcome-text" class="session-text">관리자 로그인이 필요합니다.</span>
+          <span id="role-chip" class="chip" hidden>관리자</span>
+        </div>
+        <div class="session-actions">
+          <a class="secondary-btn" href="index.html">학과 화면으로 이동</a>
+          <button id="logout-btn" class="secondary-btn" hidden>로그아웃</button>
+        </div>
+      </section>
+
+      <section id="login-section">
+        <h2>관리자 로그인</h2>
+        <p class="subtext">
+          관리자 계정으로 로그인하면 학과 질문 전체 목록과 답변 편집 기능이 활성화됩니다.
+          아이디와 비밀번호는 센터 관리자에게 문의해주세요.
+        </p>
+        <form id="login-form">
+          <label>
+            아이디
+            <input
+              id="admin-id"
+              type="text"
+              placeholder="아이디를 입력하세요"
+              autocomplete="username"
+              required
+            />
+          </label>
+          <label>
+            비밀번호
+            <input
+              id="admin-password"
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <button type="submit">로그인</button>
+        </form>
+      </section>
+
+      <section id="dashboard-section" hidden>
+        <h2>질문 관리</h2>
+        <p class="subtext">
+          답변 등록이 필요한 항목은 노란색 표시가 나타납니다. 답변을 입력하거나 수정한 후 저장 버튼을 눌러주세요.
+        </p>
+        <div id="question-list" class="question-list" role="list"></div>
+        <div
+          id="admin-pagination"
+          class="pagination"
+          role="navigation"
+          aria-label="질문 목록 페이지 이동"
+          hidden
+        ></div>
+        <div id="empty-state" class="empty-state" hidden>
+          아직 등록된 질문이 없습니다. 학과에서 문의를 등록하면 이곳에 표시됩니다.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      교육혁신지원센터 · 관리자 문의: mokgichan@univ.ac.kr · 031-000-0000
+    </footer>
+
+    <template id="question-card-template">
+      <article class="card" role="listitem">
+        <div class="card-header">
+          <span class="chip"></span>
+          <span class="meta"></span>
+        </div>
+        <div class="question-text"></div>
+        <div class="attachment-gallery question-attachments" hidden></div>
+        <div class="answer-block"></div>
+        <div class="attachment-gallery answer-attachments-display" hidden></div>
+        <div class="card-footer">
+          <span class="updated-at meta"></span>
+          <div class="card-action-group">
+            <button type="button" class="edit-question-btn secondary-btn">
+              질문 수정
+            </button>
+            <button type="button" class="delete-question-btn danger-btn">
+              질문 삭제
+            </button>
+            <button type="button" class="toggle-answer-btn"></button>
+          </div>
+        </div>
+        <form class="question-edit-form" hidden>
+          <label>
+            질문 내용
+            <textarea required></textarea>
+          </label>
+          <div class="session-actions">
+            <button type="submit" class="save-question-btn">저장</button>
+            <button type="button" class="secondary-btn cancel-question-btn">
+              취소
+            </button>
+          </div>
+        </form>
+        <form class="answer-form" hidden>
+          <label>
+            답변 내용
+            <textarea required></textarea>
+          </label>
+          <div class="attachment-box">
+            <p class="attachment-hint">
+              <span class="attachment-warning"
+                >캡처 이미지를 붙여넣기(Ctrl+V) 하면 첨부됩니다. (최대 5개, 파일당
+                5MB)</span
+              >
+            </p>
+            <div
+              class="attachment-preview answer-attachment-preview"
+              aria-live="polite"
+            ></div>
+          </div>
+          <div class="session-actions">
+            <button type="submit" class="save-answer-btn">저장</button>
+            <button type="button" class="secondary-btn cancel-answer-btn">
+              취소
+            </button>
+          </div>
+        </form>
+      </article>
+    </template>
+
+    <script>
+      const STORAGE_KEY = "center-qna-items-v2";
+      const ADMIN_SESSION_KEY = "center-qna-admin-session-v1";
+      const ADMIN_ACCOUNT = { id: "admin", password: "8460" };
+      const MAX_ATTACHMENTS = 5;
+      const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+      const ADMIN_ITEMS_PER_PAGE = 10;
+
+      const loginForm = document.getElementById("login-form");
+      const loginSection = document.getElementById("login-section");
+      const dashboardSection = document.getElementById("dashboard-section");
+      const list = document.getElementById("question-list");
+      const emptyState = document.getElementById("empty-state");
+      const template = document.getElementById("question-card-template");
+      const welcomeText = document.getElementById("welcome-text");
+      const roleChip = document.getElementById("role-chip");
+      const logoutBtn = document.getElementById("logout-btn");
+      const adminIdInput = document.getElementById("admin-id");
+      const adminPasswordInput = document.getElementById("admin-password");
+      const adminPagination = document.getElementById("admin-pagination");
+
+      const defaultSeed = [
+        {
+          id: crypto.randomUUID(),
+          department: "컴퓨터공학과",
+          question:
+            "2025학년도 비교과 프로그램 운영 지원 신청 일정과 준비 서류가 궁금합니다.",
+          answer:
+            "3월 둘째 주에 공지 예정이며, 프로그램 개요서와 예산계획서를 함께 제출하시면 됩니다.",
+          status: "answered",
+          attachments: [],
+          answerAttachments: [],
+          createdAt: Date.now() - 1000 * 60 * 60 * 24 * 3,
+          updatedAt: Date.now() - 1000 * 60 * 60 * 24,
+          sessionId: null,
+        },
+        {
+          id: crypto.randomUUID(),
+          department: "교육학과",
+          question:
+            "교수법 워크숍 강사 섭외를 위한 추천 리스트를 받을 수 있을까요?",
+          answer: "",
+          status: "pending",
+          attachments: [],
+          answerAttachments: [],
+          createdAt: Date.now() - 1000 * 60 * 60 * 12,
+          updatedAt: Date.now() - 1000 * 60 * 60 * 12,
+          sessionId: null,
+        },
+      ];
+
+      function normalizeItem(raw) {
+        const base = { attachments: [], answerAttachments: [], ...raw };
+        if (!Array.isArray(base.attachments)) base.attachments = [];
+        if (!Array.isArray(base.answerAttachments)) base.answerAttachments = [];
+        return base;
+      }
+
+      function loadItems() {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (!stored) return defaultSeed.map(normalizeItem);
+          const parsed = JSON.parse(stored);
+          if (!Array.isArray(parsed)) throw new Error("Invalid data");
+          return parsed.map(normalizeItem);
+        } catch (error) {
+          console.error("Failed to load items", error);
+          return defaultSeed.map(normalizeItem);
+        }
+      }
+
+      function saveItems(nextItems) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextItems));
+      }
+
+      function loadSession() {
+        try {
+          const stored = sessionStorage.getItem(ADMIN_SESSION_KEY);
+          if (!stored) return null;
+          const parsed = JSON.parse(stored);
+          if (!parsed || typeof parsed !== "object") return null;
+          return parsed;
+        } catch (error) {
+          console.error("Failed to load session", error);
+          return null;
+        }
+      }
+
+      function persistSession(user) {
+        if (user) {
+          sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(user));
+        } else {
+          sessionStorage.removeItem(ADMIN_SESSION_KEY);
+        }
+      }
+
+      let items = loadItems();
+      let currentUser = loadSession();
+      const answerAttachmentDrafts = new Map();
+      let adminCurrentPage = 1;
+
+      function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(date.getDate()).padStart(2, "0")} ${String(
+          date.getHours()
+        ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+      }
+
+      function cloneAttachments(list) {
+        return (list || []).map((item) => ({ ...item }));
+      }
+
+      function buildMetaText(item) {
+        const extra = [];
+        if (item.contactName) extra.push(item.contactName);
+        if (item.contactInfo) extra.push(item.contactInfo);
+        return extra.length ? `${item.department} · ${extra.join(" · ")}` : item.department;
+      }
+
+      function renderAttachmentGallery(container, attachments) {
+        if (!attachments || !attachments.length) {
+          container.innerHTML = "";
+          container.hidden = true;
+          return;
+        }
+
+        container.hidden = false;
+        container.innerHTML = "";
+
+        attachments.forEach((attachment) => {
+          const link = document.createElement("a");
+          link.href = attachment.dataUrl;
+          link.target = "_blank";
+          link.rel = "noopener";
+          if (attachment.name) {
+            link.download = attachment.name;
+            link.title = attachment.name;
+          }
+
+          const img = document.createElement("img");
+          img.src = attachment.dataUrl;
+          img.alt = attachment.name || "첨부 이미지";
+          img.className = "attachment-thumb";
+
+          link.appendChild(img);
+          container.appendChild(link);
+        });
+      }
+
+      function renderAnswerAttachmentPreview(previewEl, itemId) {
+        const attachments = answerAttachmentDrafts.get(itemId) || [];
+        if (!attachments.length) {
+          previewEl.innerHTML =
+            '<p class="attachment-empty">붙여넣기(Ctrl+V)로 이미지를 첨부할 수 있습니다.</p>';
+          return;
+        }
+
+        previewEl.innerHTML = "";
+        attachments.forEach((attachment) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "attachment-item";
+
+          const img = document.createElement("img");
+          img.src = attachment.dataUrl;
+          img.alt = attachment.name || "첨부 이미지";
+          img.className = "attachment-thumb";
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "attachment-remove";
+          removeBtn.title = "첨부 삭제";
+          removeBtn.textContent = "×";
+          removeBtn.addEventListener("click", () => {
+            const next = (answerAttachmentDrafts.get(itemId) || []).filter(
+              (entry) => entry.id !== attachment.id
+            );
+            answerAttachmentDrafts.set(itemId, next);
+            renderAnswerAttachmentPreview(previewEl, itemId);
+          });
+
+          wrapper.appendChild(img);
+          wrapper.appendChild(removeBtn);
+          previewEl.appendChild(wrapper);
+        });
+      }
+
+      function renderAdminPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / ADMIN_ITEMS_PER_PAGE);
+
+        if (totalPages <= 1) {
+          adminPagination.hidden = true;
+          adminPagination.innerHTML = "";
+          return;
+        }
+
+        adminPagination.hidden = false;
+        adminPagination.innerHTML = "";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.textContent = "이전";
+        prevBtn.disabled = adminCurrentPage === 1;
+        prevBtn.addEventListener("click", () => {
+          if (adminCurrentPage > 1) {
+            adminCurrentPage -= 1;
+            renderItems();
+          }
+        });
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.textContent = "다음";
+        nextBtn.disabled = adminCurrentPage === totalPages;
+        nextBtn.addEventListener("click", () => {
+          if (adminCurrentPage < totalPages) {
+            adminCurrentPage += 1;
+            renderItems();
+          }
+        });
+
+        const status = document.createElement("span");
+        status.className = "page-status";
+        status.textContent = `${adminCurrentPage} / ${totalPages}`;
+
+        adminPagination.appendChild(prevBtn);
+        adminPagination.appendChild(status);
+        adminPagination.appendChild(nextBtn);
+      }
+
+      function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("Failed to read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function addAttachmentsFromFiles(files, attachments, renderFn) {
+        for (const file of files) {
+          if (!file) continue;
+          if (!file.type.startsWith("image/")) continue;
+          if (attachments.length >= MAX_ATTACHMENTS) {
+            alert(`이미지는 최대 ${MAX_ATTACHMENTS}개까지 첨부할 수 있습니다.`);
+            break;
+          }
+          if (file.size > MAX_IMAGE_BYTES) {
+            alert("이미지 크기는 5MB 이하여야 합니다.");
+            continue;
+          }
+          try {
+            const dataUrl = await readFileAsDataURL(file);
+            attachments.push({
+              id: crypto.randomUUID(),
+              dataUrl,
+              mimeType: file.type,
+              name: file.name || "clipboard-image",
+              addedAt: Date.now(),
+            });
+          } catch (error) {
+            console.error(error);
+            alert("이미지 첨부에 실패했습니다. 다시 시도해주세요.");
+          }
+        }
+        renderFn();
+      }
+
+      function setCurrentUser(user) {
+        currentUser = user;
+        persistSession(user);
+        if (!user) {
+          answerAttachmentDrafts.clear();
+        }
+        adminCurrentPage = 1;
+        refreshUI();
+      }
+
+      function refreshUI() {
+        const isLoggedIn = !!currentUser;
+
+        welcomeText.textContent = isLoggedIn
+          ? "관리자 모드입니다. 모든 학과 질문을 확인하고 답변을 등록할 수 있습니다."
+          : "관리자 로그인이 필요합니다.";
+
+        roleChip.hidden = !isLoggedIn;
+        logoutBtn.hidden = !isLoggedIn;
+        loginSection.hidden = isLoggedIn;
+        dashboardSection.hidden = !isLoggedIn;
+
+        if (isLoggedIn) {
+          adminIdInput.value = "";
+          adminPasswordInput.value = "";
+          renderItems();
+        } else {
+          list.innerHTML = "";
+          emptyState.hidden = true;
+          adminPagination.hidden = true;
+          adminPagination.innerHTML = "";
+          adminIdInput.focus();
+        }
+      }
+
+      function renderItems() {
+        list.innerHTML = "";
+
+        if (!currentUser) return;
+
+        if (!items.length) {
+          emptyState.hidden = false;
+          emptyState.textContent =
+            "등록된 질문이 없습니다. 학과에서 질문을 등록하면 이곳에 표시됩니다.";
+          renderAdminPagination(0);
+          return;
+        }
+
+        emptyState.hidden = true;
+
+        const sortedItems = items
+          .slice()
+          .sort((a, b) => b.updatedAt - a.updatedAt);
+
+        const validIds = new Set(sortedItems.map((item) => item.id));
+        Array.from(answerAttachmentDrafts.keys()).forEach((id) => {
+          if (!validIds.has(id)) answerAttachmentDrafts.delete(id);
+        });
+
+        const totalPages = Math.ceil(sortedItems.length / ADMIN_ITEMS_PER_PAGE);
+        if (adminCurrentPage > totalPages) {
+          adminCurrentPage = totalPages;
+        }
+
+        const start = (adminCurrentPage - 1) * ADMIN_ITEMS_PER_PAGE;
+        const pageItems = sortedItems.slice(
+          start,
+          start + ADMIN_ITEMS_PER_PAGE
+        );
+
+        pageItems.forEach((item) => {
+          if (!answerAttachmentDrafts.has(item.id)) {
+            answerAttachmentDrafts.set(
+              item.id,
+              cloneAttachments(item.answerAttachments)
+            );
+          }
+
+          const card = template.content.firstElementChild.cloneNode(true);
+          const chip = card.querySelector(".chip");
+          const meta = card.querySelector(".meta");
+          const questionText = card.querySelector(".question-text");
+          const questionAttachmentsContainer = card.querySelector(
+            ".question-attachments"
+          );
+          const answerBlock = card.querySelector(".answer-block");
+          const answerAttachmentsContainer = card.querySelector(
+            ".answer-attachments-display"
+          );
+          const updatedAt = card.querySelector(".updated-at");
+          const toggleBtn = card.querySelector(".toggle-answer-btn");
+          const answerForm = card.querySelector(".answer-form");
+          const answerTextarea = answerForm.querySelector("textarea");
+          const cancelAnswerBtn = answerForm.querySelector(
+            ".cancel-answer-btn"
+          );
+          const answerPreview = answerForm.querySelector(
+            ".answer-attachment-preview"
+          );
+          const editQuestionBtn = card.querySelector(".edit-question-btn");
+          const deleteQuestionBtn = card.querySelector(".delete-question-btn");
+          const questionEditForm = card.querySelector(".question-edit-form");
+          const questionEditTextarea =
+            questionEditForm.querySelector("textarea");
+          const questionEditCancelBtn = questionEditForm.querySelector(
+            ".cancel-question-btn"
+          );
+
+          chip.textContent =
+            item.status === "answered" ? "답변 완료" : "답변 대기";
+          chip.classList.add(
+            item.status === "answered" ? "answered" : "pending"
+          );
+
+          meta.textContent = buildMetaText(item);
+          questionText.textContent = item.question;
+
+          renderAttachmentGallery(
+            questionAttachmentsContainer,
+            item.attachments
+          );
+
+          if (item.answer) {
+            answerBlock.textContent = item.answer;
+            answerBlock.classList.remove("empty");
+          } else {
+            answerBlock.textContent = "답변이 아직 등록되지 않았습니다.";
+            answerBlock.classList.add("empty");
+          }
+
+          renderAttachmentGallery(
+            answerAttachmentsContainer,
+            item.answerAttachments
+          );
+
+          updatedAt.textContent = `최근 업데이트: ${formatDate(
+            item.updatedAt
+          )}`;
+
+          editQuestionBtn.addEventListener("click", () => {
+            const isOpen = !questionEditForm.hidden;
+            document
+              .querySelectorAll(".question-edit-form")
+              .forEach((formEl) => {
+                if (formEl !== questionEditForm) formEl.hidden = true;
+              });
+            if (isOpen) {
+              questionEditForm.hidden = true;
+            } else {
+              document
+                .querySelectorAll(".answer-form")
+                .forEach((formEl) => {
+                  formEl.hidden = true;
+                });
+              questionEditTextarea.value = item.question;
+              questionEditForm.hidden = false;
+              questionEditTextarea.focus();
+            }
+          });
+
+          questionEditForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const value = questionEditTextarea.value.trim();
+            if (!value) {
+              alert("질문 내용을 입력해주세요.");
+              questionEditTextarea.focus();
+              return;
+            }
+            items = items.map((el) =>
+              el.id === item.id
+                ? { ...el, question: value, updatedAt: Date.now() }
+                : el
+            );
+            saveItems(items);
+            renderItems();
+          });
+
+          questionEditCancelBtn.addEventListener("click", () => {
+            questionEditForm.hidden = true;
+          });
+
+          deleteQuestionBtn.addEventListener("click", () => {
+            const confirmed = confirm(
+              "이 질문을 삭제하시겠습니까? 삭제 후에는 되돌릴 수 없습니다."
+            );
+            if (!confirmed) return;
+
+            items = items.filter((el) => el.id !== item.id);
+            saveItems(items);
+            answerAttachmentDrafts.delete(item.id);
+
+            const remainingPages = Math.ceil(
+              items.length / ADMIN_ITEMS_PER_PAGE
+            );
+            if (adminCurrentPage > remainingPages) {
+              adminCurrentPage = Math.max(remainingPages, 1);
+            }
+
+            renderItems();
+          });
+
+          toggleBtn.textContent = item.answer ? "답변 수정" : "답변 등록";
+          toggleBtn.addEventListener("click", () => {
+            const isOpen = !answerForm.hidden;
+            document
+              .querySelectorAll(".answer-form")
+              .forEach((formEl) => {
+                if (formEl !== answerForm) formEl.hidden = true;
+              });
+            document
+              .querySelectorAll(".question-edit-form")
+              .forEach((formEl) => {
+                formEl.hidden = true;
+              });
+
+            if (isOpen) {
+              answerForm.hidden = true;
+              answerAttachmentDrafts.set(
+                item.id,
+                cloneAttachments(item.answerAttachments)
+              );
+            } else {
+              answerTextarea.value = item.answer;
+              answerAttachmentDrafts.set(
+                item.id,
+                cloneAttachments(item.answerAttachments)
+              );
+              renderAnswerAttachmentPreview(answerPreview, item.id);
+              answerForm.hidden = false;
+              answerTextarea.focus();
+            }
+          });
+
+          answerForm.addEventListener("paste", async (event) => {
+            const clipboardItems = event.clipboardData?.items;
+            if (!clipboardItems) return;
+            const files = Array.from(clipboardItems)
+              .filter(
+                (clipboardItem) =>
+                  clipboardItem.kind === "file" &&
+                  clipboardItem.type.startsWith("image/")
+              )
+              .map((clipboardItem) => clipboardItem.getAsFile())
+              .filter(Boolean);
+            if (!files.length) return;
+
+            const draft =
+              answerAttachmentDrafts.get(item.id) ||
+              cloneAttachments(item.answerAttachments);
+            answerAttachmentDrafts.set(item.id, draft);
+
+            await addAttachmentsFromFiles(files, draft, () => {
+              renderAnswerAttachmentPreview(answerPreview, item.id);
+            });
+          });
+
+          answerForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const value = answerTextarea.value.trim();
+            if (!value) {
+              alert("답변 내용을 입력해주세요.");
+              answerTextarea.focus();
+              return;
+            }
+            const drafts =
+              answerAttachmentDrafts.get(item.id) ||
+              cloneAttachments(item.answerAttachments);
+
+            items = items.map((el) =>
+              el.id === item.id
+                ? {
+                    ...el,
+                    answer: value,
+                    answerAttachments: cloneAttachments(drafts),
+                    status: "answered",
+                    updatedAt: Date.now(),
+                  }
+                : el
+            );
+            saveItems(items);
+            answerAttachmentDrafts.set(
+              item.id,
+              cloneAttachments(
+                items.find((entry) => entry.id === item.id).answerAttachments
+              )
+            );
+            renderItems();
+          });
+
+          cancelAnswerBtn.addEventListener("click", () => {
+            answerAttachmentDrafts.set(
+              item.id,
+              cloneAttachments(item.answerAttachments)
+            );
+            renderAnswerAttachmentPreview(answerPreview, item.id);
+            answerForm.hidden = true;
+          });
+
+          list.appendChild(card);
+        });
+
+        renderAdminPagination(sortedItems.length);
+      }
+
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const id = adminIdInput.value.trim();
+        const password = adminPasswordInput.value.trim();
+
+        if (id !== ADMIN_ACCOUNT.id || password !== ADMIN_ACCOUNT.password) {
+          alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+          adminPasswordInput.focus();
+          adminPasswordInput.select();
+          return;
+        }
+
+        setCurrentUser({ role: "admin" });
+      });
+
+      logoutBtn.addEventListener("click", () => {
+        setCurrentUser(null);
+      });
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === STORAGE_KEY) {
+          items = loadItems();
+          answerAttachmentDrafts.clear();
+          const totalPages =
+            Math.ceil(items.length / ADMIN_ITEMS_PER_PAGE) || 1;
+          if (adminCurrentPage > totalPages) {
+            adminCurrentPage = totalPages;
+          }
+          renderItems();
+        }
+      });
+
+      refreshUI();
+
+      if (currentUser) {
+        renderItems();
+      }
+    </script>
+  </body>
+</html>
+
