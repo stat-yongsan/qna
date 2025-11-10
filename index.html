@@ -430,10 +430,9 @@
       <section class="session-bar" aria-live="polite">
         <div class="session-info">
           <span id="welcome-text" class="session-text"
-            >현재 학과 전용 모드입니다. 이 브라우저에서 등록한 질문만 확인할 수
-            있습니다.</span
+            >등록된 모든 질문과 답변을 누구나 확인할 수 있습니다.</span
           >
-          <span class="chip role">질문 등록 전용</span>
+          <span class="chip role">공유 보기</span>
         </div>
         <a class="secondary-btn" href="admin.html">관리자 로그인</a>
       </section>
@@ -505,7 +504,7 @@
       <section aria-labelledby="list-title">
         <h2 id="list-title">질문 및 답변 현황</h2>
         <p class="subtext">
-          현재 브라우저에서 등록한 질문만 표시됩니다. 전체 질문과 답변 관리는
+          등록된 질문과 답변이 최신순으로 표시됩니다. 질문 관리 및 답변 등록은
           <a href="admin.html">관리자 화면</a>에서 진행됩니다.
         </p>
         <div id="question-list" class="question-list" role="list"></div>
@@ -774,7 +773,6 @@
           const { data, error } = await supabaseClient
             .from(QUESTIONS_TABLE)
             .select("*")
-            .eq("session_id", deviceId)
             .order("updated_at", { ascending: false });
           if (error) throw error;
           items = (data || []).map(normalizeRow);
@@ -918,15 +916,10 @@
 
       if (SUPABASE_READY) {
         realtimeChannel = supabaseClient
-          .channel(`public:${QUESTIONS_TABLE}:session:${deviceId}`)
+          .channel(`public:${QUESTIONS_TABLE}:shared-view`)
           .on(
             "postgres_changes",
-            {
-              event: "*",
-              schema: "public",
-              table: QUESTIONS_TABLE,
-              filter: `session_id=eq.${deviceId}`,
-            },
+            { event: "*", schema: "public", table: QUESTIONS_TABLE },
             () => refreshItems()
           )
           .subscribe();
